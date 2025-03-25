@@ -1,0 +1,72 @@
+
+def compare_time(out_num):
+    #Check that the file is valid
+    if folder_paths['folder1'] is None or folder_paths['folder2'] is None:
+        messagebox.showerror("Error", "Please select both folders before comparing.")
+        return
+    output_file_name = f"COMBINE_HIGHLIGHT_{out_num}.docx"
+    output_file_path = os.path.join(folder_paths['folder2'].get(), output_file_name)
+
+    #Create the input/output word documents
+    #get files
+    outfile = Document()
+    outfile._body.clear_content()
+
+    #Loop through the paragraphs and compare them
+    for para1, para2 in zip(file1.paragraphs, file2.paragraphs):
+        runs1 = [run.text for run in para1.runs]
+        runs2 = [run.text for run in para2.runs]
+        final_text = ''.join(runs1)
+        final_map1 = ""
+        final_map2 = ""
+        
+        for run in para1.runs:
+            if run.font.highlight_color == None:
+                final_map1 += "N" * len(run.text)
+            else:
+                final_map1 += "Y" * len(run.text)
+
+        for run in para2.runs:
+            if run.font.highlight_color == None:
+                final_map2 += "N" * len(run.text)
+            else:
+                final_map2 += "Y" * len(run.text)
+        map_FINAL = ""
+
+        #Calculate overlaps
+        for char1, char2 in zip(final_map1, final_map2):
+            if char1 == char2:
+                if char1=="Y":
+                    map_FINAL += "G"
+                elif char1=="N":
+                    map_FINAL += "N"
+            else:
+                map_FINAL += "Y"
+        
+        final_group = [(char, len(list(group))) for char, group in groupby(map_FINAL)]
+
+        #Now that we know the highlighting, create the output paragraph
+
+        p = outfile.add_paragraph('')
+        
+
+        for group in final_group:
+            r = p.add_run(final_text[:group[1]])
+            final_text = final_text[group[1]:]
+            if group[0] == "N":
+                r.font.highlight_color = None
+            elif group[0] == "Y":
+                r.font.highlight_color = 7  # Yellow
+            elif group[0] == "G":
+                r.font.highlight_color = 4  # Green
+
+    #Save the output file
+    outfile.save(output_file_path)
+    outfile = Document(output_file_path)
+    for para in outfile.paragraphs:
+        print(para.text)
+        
+    messagebox.showinfo("Success", f"Comparison saved to {output_file_path}")
+    out_num += 1
+    with open("file_num.txt", "w") as f:
+        f.write(str(out_num))
