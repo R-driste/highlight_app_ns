@@ -10,7 +10,6 @@ root = tk.Tk()
 root.title("Transcription Highlight Widget")
 root.geometry("450x600")
 
-
 label0 = tk.Label(root, text="Welcome. Please select correct folders.\nFiles must be MMDDYYYY-#-IN Microsoft Doc format.\n\nKEY:\nEmpty: No highlight\nYellow: One highlight\nGreen: Two highlights\nBlue: Three highlights.", font=("Arial", 14))
 label0.pack(pady=20)
 
