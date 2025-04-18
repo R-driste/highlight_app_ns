@@ -10,6 +10,7 @@ root = tk.Tk()
 root.title("Transcription Highlight Widget")
 root.geometry("450x600")
 
+
 label0 = tk.Label(root, text="Welcome. Please select correct folders.\nFiles must be MMDDYYYY-#-IN Microsoft Doc format.\n\nKEY:\nEmpty: No highlight\nYellow: One highlight\nGreen: Two highlights\nBlue: Three highlights.", font=("Arial", 14))
 label0.pack(pady=20)
 
@@ -78,27 +79,24 @@ def compare_2(values, output_path):
     outfile = Document()
     outfile._body.clear_content()
 
-    # Loop through the paragraphs and compare them
+    #Loop through the paragraphs and compare them
     for para1, para2 in zip(file1.paragraphs, file2.paragraphs):
         runs1 = [run.text for run in para1.runs]
         final_text = ''.join(runs1)
         final_map1 = ""
         final_map2 = ""
-
+        
         for run in para1.runs:
-            print(f"Run text: {run.text}, Highlight: {run.font.highlight_color}")  # Debug print
-            if run.font.highlight_color is None:
+            if run.font.highlight_color == None:
                 final_map1 += "N" * len(run.text)
             else:
                 final_map1 += "Y" * len(run.text)
 
         for run in para2.runs:
-            print(f"Run text: {run.text}, Highlight: {run.font.highlight_color}")  # Debug print
-            if run.font.highlight_color is None:
+            if run.font.highlight_color == None:
                 final_map2 += "N" * len(run.text)
             else:
                 final_map2 += "Y" * len(run.text)
-
         map_FINAL = ""
 
         for char1, char2 in zip(final_map1, final_map2):

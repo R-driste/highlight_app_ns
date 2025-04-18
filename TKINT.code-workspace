@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../INPUTS_FOLDER_example"
+		},
+		{
+			"path": "../OUTPUTS_FOLDER_example"
+		}
+	],
+	"settings": {}
+}
